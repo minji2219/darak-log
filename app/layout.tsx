@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Sans_KR } from "next/font/google";
 import "./globals.css";
-import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
+import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,10 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={IBM.className}>
+      <body className={`${IBM.className} bg-black`}>
         <NavBar />
         {children}
-        <Footer />
       </body>
     </html>
   );
