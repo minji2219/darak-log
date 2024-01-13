@@ -4,10 +4,10 @@ import Post from "./Post";
 import Link from "next/link";
 
 export default function Page() {
-  const test = async () => {
-    const result = await axios.get("http://localhost:8080/post");
-    console.log(result.data);
-  };
+  // const test = async () => {
+  //   const result = await axios.get("http://localhost:8080/post");
+  //   console.log(result.data);
+  // };
   return (
     <div className="pt-10">
       <div className="text-center text-white absolute top-24 left-[50%] translate-x-[-50%]">
