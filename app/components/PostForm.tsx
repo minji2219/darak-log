@@ -10,17 +10,21 @@ export default function Page() {
   const [value, setValue] = useState("");
 
   return (
-    <form className="max-w-[680px] mx-auto">
-      <Input label="제목" type="text" placeholder="제목을 입력하세요." />
-      {/* 카테고리 select */}
-      <label>내용</label>
+    <form className="mt-5 relative">
+      <input
+        type="text"
+        placeholder="제목"
+        className="w-[90%] mb-10 mx-auto bg-[#F3F3F3] p-4 rounded-3xl text-center block "
+      />
       <ReactQuill
         theme="snow"
         value={value}
         onChange={setValue}
-        className="h-[400px] mb-10"
+        className="h-[430px] mb-10"
       />
-      <button className="btn--primary">글쓰기</button>
+      <button className="bg-[#93AE8A] text-white text-lg p-4 rounded-r-3xl absolute top-[50px] right-[-150px]">
+        등록
+      </button>
     </form>
   );
 }

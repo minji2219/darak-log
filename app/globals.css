@@ -5,6 +5,24 @@
 body {
   font-family: "IBM Plex Sans KR", sans-serif;
 }
-.btn--primary {
-  @apply bg-blue-600 text-white w-[100%] p-2 rounded-md mt-2;
+
+/* home-post */
+.big__home-post {
+  @apply h-[350px] rounded-[200px] my-5 bg-no-repeat bg-cover;
+}
+.big__home-post .hover {
+  @apply bg-slate-800/50 flex justify-between items-center w-[100%] h-[100%] rounded-[200px] p-28;
+}
+.big__home-post .title {
+  @apply text-5xl font-extrabold mb-3;
+}
+
+.small__home-post {
+  @apply h-[80px] rounded-[200px] my-5 bg-no-repeat bg-cover;
+}
+.small__home-post .hover {
+  @apply bg-slate-800/50 flex justify-between items-center w-[100%] h-[100%] rounded-[200px] px-28;
+}
+.small__home-post .title {
+  @apply text-xl font-extrabold;
 }
