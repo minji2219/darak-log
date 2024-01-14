@@ -29,6 +29,21 @@ const page = () => {
       </div>
       <Comment />
       <Comment />
+
+      <div className="border-t-2 mt-20 pt-5 pb-16">
+        <div className="flex gap-3 items-center px-5 pb-3">
+          <div className="w-[40px] h-[40px] rounded-[50%] bg-[#D9D9D9]"></div>
+          <div className="font-bold">닉네임</div>
+        </div>
+        <div className="flex gap-2 grow">
+          <input
+            type="text"
+            placeholder="내용"
+            className="p-3 border-2 border-black rounded-3xl grow"
+          />
+          <button className="p-10 bg-black text-white rounded-3xl">등록</button>
+        </div>
+      </div>
     </div>
   );
 };

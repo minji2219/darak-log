@@ -11,7 +11,7 @@ const IBM = IBM_Plex_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "민지 |  블로그",
+  title: "민지 |  darak-log",
   description: "민지의 개인 블로그",
 };
 
