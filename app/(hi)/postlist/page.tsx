@@ -1,5 +1,4 @@
 "use client";
-import axios from "axios";
 import Post from "./Post";
 import Link from "next/link";
 

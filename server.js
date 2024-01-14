@@ -1,9 +1,9 @@
 const express = require("express");
-const next = require("next");
+// const next = require("next");
 const { MongoClient } = require("mongodb");
 
-const dev = process.env.NODE_ENV !== "production";
-const cors = require("cors");
+// const dev = process.env.NODE_ENV !== "production";
+// const cors = require("cors");
 const app = express();
 
 let db;
@@ -25,9 +25,9 @@ app.get("/post", async (req, res) => {
   res.json({ posts: result });
 });
 
-// app.get("*", (req, res) => {
-//   return handle(req, res);
-// });
+app.get("*", (req, res) => {
+  return handle(req, res);
+});
 
 app.listen(8080, (err) => {
   if (err) throw err;
