@@ -11,7 +11,6 @@ export default function Page() {
         <h1 className="text-3xl font-bold pt-2 pb-10">마이페이지</h1>
       </div>
       <div className="w-[250px] h-[250px] rounded-[50%] bg-[url('/profile.jpg')] bg-no-repeat bg-cover border-4 absolute left-[50%] translate-x-[-50%] translate-y-[-50%]"></div>
-      {/* <Image src={subtract} alt="subtract" /> */}
       <div className="h-[350px] flex justify-between items-end text-[#444444] px-32 pb-16 bg-[#F3F3F3] rounded-t-[100px] rounded-b-3xl -mx-10">
         <div className="flex flex-col items-center">
           <GoPerson size={100} className="mb-7" />
