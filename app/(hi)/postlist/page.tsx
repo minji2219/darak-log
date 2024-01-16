@@ -4,7 +4,7 @@ import Post from "./Post";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-interface Post {
+export interface Post {
   _id: string;
   title: string;
   content: string;
@@ -12,7 +12,7 @@ interface Post {
 }
 export default function Page() {
   const [posts, setPosts] = useState<Post[]>();
-  const postlists = async () => {
+  const postlistFetch = async () => {
     const response = await fetch(
       process.env.NEXT_PUBLIC_API_KEY + "/api/read/postlist"
     )
@@ -20,7 +20,7 @@ export default function Page() {
       .then((data) => setPosts(data.posts));
   };
   useEffect(() => {
-    postlists();
+    postlistFetch();
   }, []);
 
   return (

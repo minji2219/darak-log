@@ -5,7 +5,7 @@ import { IoHeartOutline } from "react-icons/io5";
 
 export default function Page() {
   return (
-    <div className="h-[80vh]">
+    <div>
       <div className="text-center text-white absolute top-24 left-[50%] translate-x-[-50%]">
         <div>다락로그</div>
         <h1 className="text-3xl font-bold pt-2 pb-10">마이페이지</h1>

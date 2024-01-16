@@ -1,23 +1,42 @@
+"use client";
 import IconGroup from "@/components/IconGroup";
 import Comment from "../comment";
 import { IoHeartOutline } from "react-icons/io5";
-const page = () => {
+import { useEffect, useState } from "react";
+import { Post } from "@/(hi)/postlist/page";
+import { useParams } from "next/navigation";
+
+export default function Page() {
+  const [post, setPost] = useState<Post>();
+  const params = useParams();
+
+  const postFetch = async () => {
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_API_KEY + "/api/read/detail/" + params?.id
+    )
+      .then((res) => res.json())
+      .then((data) => setPost(data.post));
+  };
+  useEffect(() => {
+    postFetch();
+  }, []);
+
   return (
     <div className="max-w-[950px] mx-auto">
       <div className="text-center text-white absolute top-24 left-[50%] translate-x-[-50%]">
         <div>카테고리</div>
-        <h1 className="text-3xl font-bold pt-2 pb-10">글 제목</h1>
-        <div>2024.01.11 THU</div>
+        <h1 className="text-3xl font-bold pt-2 pb-10">{post?.title}</h1>
+        <div>{post?.createdAt}</div>
       </div>
       <div className="flex justify-center mb-24">
         <IconGroup />
       </div>
       <div className="min-h-[350px]">
-        오늘은 친구들이랑 카공을 했따
-        <br /> 문수연은 앞에서 울면서 폰만 하고 ㅣㅇㅆ다
-        <br />
-        수연아 힘내
-        <br /> 괜찮아 그럴 수 있지
+        <div
+          dangerouslySetInnerHTML={{
+            __html: post?.content as string,
+          }}
+        />
       </div>
       <div className="text-gray-400 border-b-2 pb-1 flex justify-between">
         <p>댓글</p>
@@ -46,6 +65,4 @@ const page = () => {
       </div>
     </div>
   );
-};
-
-export default page;
+}
