@@ -1,4 +1,3 @@
-import Image from "next/image";
 import HomePost from "./components/HomePost";
 
 export default function Home() {

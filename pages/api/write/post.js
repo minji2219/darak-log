@@ -17,7 +17,7 @@ export default async function handler(req, res) {
   await db.collection("post").insertOne({
     title: req.body.title,
     content: req.body.content,
+    category: req.body.category,
     createdAt: createdAt,
   });
-  //카테고리 추가
 }
