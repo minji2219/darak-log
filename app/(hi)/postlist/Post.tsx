@@ -1,5 +1,5 @@
 import IconGroup from "@/components/IconGroup";
-import DOMPurify from "dompurify";
+// import DOMPurify from "dompurify";
 
 interface PostProps {
   title: string;
@@ -16,7 +16,7 @@ const Post = (props: PostProps) => {
           <h1 className="text-3xl font-bold pb-20">{props.title}</h1>
           <div
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(props.content),
+              __html: props.content,
             }}
             style={{
               marginTop: "30px",
