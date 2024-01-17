@@ -24,6 +24,8 @@ export default function Page() {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
+  const [summary, setSummary] = useState("");
+
   const submit = async () => {
     await fetch(process.env.NEXT_PUBLIC_API_KEY + "/api/write/post", {
       method: "POST",
@@ -35,6 +37,7 @@ export default function Page() {
         title: title,
         content: content,
         category: category,
+        summary: summary,
       }),
     });
   };
@@ -49,14 +52,19 @@ export default function Page() {
         <option value="카테고리2">카테고리2</option>
         <option value="카테고리3">카테고리3</option>
       </select>
-      <input
-        name="title"
-        type="text"
-        placeholder="제목"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="w-[90%] mb-10 mx-auto bg-[#F3F3F3] p-4 rounded-3xl text-center block"
-      />
+      <div className="flex gap-3 mb-8">
+        <input
+          name="title"
+          type="text"
+          placeholder="제목"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="w-[90%] bg-[#F3F3F3] p-4 rounded-3xl text-center"
+        />
+        <button className="bg-[#93AE8A] text-white text-lg px-7 py-4 rounded-[100px]">
+          등록
+        </button>
+      </div>
       <QuillNoSSRWrapper
         name="content"
         forwardedRef={quillInstance}
@@ -65,11 +73,15 @@ export default function Page() {
         // modules={modules}
         theme="snow"
         placeholder="내용을 입력해주세요."
-        className="h-[430px] mb-10"
+        className="h-[430px] mb-16"
       />
-      <button className="bg-[#93AE8A] text-white text-lg p-4 rounded-r-3xl absolute top-[50px] right-[-150px]">
-        등록
-      </button>
+      <div className="my-5 text-2xl font-semibold pl-5">요약</div>
+      <textarea
+        placeholder="내용"
+        className="w-[100%] h-32 rounded-2xl p-5 bg-[#F3F3F3] text-lg"
+        value={summary}
+        onChange={(e) => setSummary(e.target.value)}
+      />
     </form>
   );
 }

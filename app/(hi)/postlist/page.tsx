@@ -4,7 +4,12 @@ import Post, { PostProps } from "./Post";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+export interface Comment {
+  createdAt: string;
+  comment: string;
+}
 export interface Post extends PostProps {
+  comments?: Comment[];
   _id: string;
 }
 export default function Page() {
@@ -36,6 +41,7 @@ export default function Page() {
                 content={post.content}
                 createdAt={post.createdAt}
                 category={post.category}
+                summary={post.summary}
               />
             </Link>
           </div>

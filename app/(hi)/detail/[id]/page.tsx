@@ -8,10 +8,11 @@ import { useParams } from "next/navigation";
 
 export default function Page() {
   const [post, setPost] = useState<Post>();
+  const [commentWrite, setCommentWrite] = useState("");
   const params = useParams();
 
   const postFetch = async () => {
-    const response = await fetch(
+    await fetch(
       process.env.NEXT_PUBLIC_API_KEY + "/api/read/detail/" + params?.id
     )
       .then((res) => res.json())
@@ -20,7 +21,27 @@ export default function Page() {
   useEffect(() => {
     postFetch();
   }, []);
-
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (commentWrite === "") {
+      alert("댓글을 입력하세요.");
+      return;
+    }
+    await fetch(
+      process.env.NEXT_PUBLIC_API_KEY + "/api/write/comment/?id=" + params?.id,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+        },
+        body: JSON.stringify({
+          comment: commentWrite,
+        }),
+      }
+    );
+    setCommentWrite("");
+    postFetch();
+  };
   return (
     <div className="max-w-[950px] mx-auto">
       <div className="text-center text-white absolute top-24 left-[50%] translate-x-[-50%]">
@@ -46,22 +67,27 @@ export default function Page() {
           <IoHeartOutline size="25" />
         </div>
       </div>
-      <Comment />
-      <Comment />
+
+      {post?.comments?.map((commmet, index) => (
+        <div key={index}>
+          <Comment data={commmet} />
+        </div>
+      ))}
 
       <div className="border-t-2 mt-20 pt-5 pb-16">
         <div className="flex gap-3 items-center px-5 pb-3">
           <div className="w-[40px] h-[40px] rounded-[50%] bg-[#D9D9D9]"></div>
           <div className="font-bold">닉네임</div>
         </div>
-        <div className="flex gap-2 grow">
-          <input
-            type="text"
+        <form onSubmit={onSubmit} className="flex gap-2 grow">
+          <textarea
             placeholder="내용"
             className="p-3 border-2 border-black rounded-3xl grow"
+            value={commentWrite}
+            onChange={(e) => setCommentWrite(e.target.value)}
           />
           <button className="p-10 bg-black text-white rounded-3xl">등록</button>
-        </div>
+        </form>
       </div>
     </div>
   );

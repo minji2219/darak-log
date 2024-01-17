@@ -6,6 +6,7 @@ export interface PostProps {
   content: string;
   createdAt: string;
   category: string;
+  summary: string;
 }
 const Post = (props: PostProps) => {
   return (

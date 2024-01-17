@@ -1,4 +1,5 @@
 let connectDB = require("../database");
+const { ObjectId } = require("mongodb");
 
 export default async function handler(req, res) {
   const curr = new Date();
@@ -14,11 +15,18 @@ export default async function handler(req, res) {
   const client = await connectDB;
   const db = client.db("blog");
 
-  await db.collection("post").insertOne({
-    title: req.body.title,
-    content: req.body.content,
-    category: req.body.category,
-    summary: req.body.summary,
-    createdAt: createdAt,
-  });
+  await db.collection("post").updateOne(
+    { _id: new ObjectId(`${req.query.id}`) },
+    {
+      //TODO 덮어써지는게 아니라 하나씩 추가되어야함.
+      $set: {
+        comments: [
+          {
+            comment: req.body.comment,
+            createdAt: createdAt,
+          },
+        ],
+      },
+    }
+  );
 }
