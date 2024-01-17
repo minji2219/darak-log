@@ -1,10 +1,11 @@
 import IconGroup from "@/components/IconGroup";
 // import DOMPurify from "dompurify";
 
-interface PostProps {
+export interface PostProps {
   title: string;
   content: string;
   createdAt: string;
+  category: string;
 }
 const Post = (props: PostProps) => {
   return (

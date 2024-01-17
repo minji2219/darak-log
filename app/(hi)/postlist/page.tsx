@@ -1,14 +1,11 @@
 "use client";
 
-import Post from "./Post";
+import Post, { PostProps } from "./Post";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export interface Post {
+export interface Post extends PostProps {
   _id: string;
-  title: string;
-  content: string;
-  createdAt: string;
 }
 export default function Page() {
   const [posts, setPosts] = useState<Post[]>();
@@ -38,6 +35,7 @@ export default function Page() {
                 title={post.title}
                 content={post.content}
                 createdAt={post.createdAt}
+                category={post.category}
               />
             </Link>
           </div>

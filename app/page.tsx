@@ -1,14 +1,30 @@
+"use client";
+import { useEffect, useState } from "react";
 import HomePost from "./components/HomePost";
+import { Post } from "./(hi)/postlist/page";
 
 export default function Home() {
+  const [posts, setPosts] = useState<Post[]>();
+  const thirdPostFetch = async () => {
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_API_KEY + "/api/read/thirdpost"
+    )
+      .then((res) => res.json())
+      .then((data) => setPosts(data.posts));
+  };
+  useEffect(() => {
+    thirdPostFetch();
+  }, []);
+
   return (
     <div className="max-w-[900px] mx-auto">
       <div className="text-white text-4xl font-extrabold text-center mb-24">
         다락로그
       </div>
-      <HomePost />
-      <HomePost small />
-      <HomePost small />
+
+      <HomePost post={(posts && posts[0]) || undefined} />
+      <HomePost post={(posts && posts[1]) || undefined} small />
+      <HomePost post={(posts && posts[2]) || undefined} small />
 
       <div className="flex justify-between">
         <div className="bg-white h-[300px] w-[550px] rounded-[200px] my-5 py-14 px-20">
