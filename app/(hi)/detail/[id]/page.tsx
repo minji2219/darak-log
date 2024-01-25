@@ -70,6 +70,7 @@ export default function Page() {
 
       {post?.comments?.map((commmet, index) => (
         <div key={index}>
+          {/* TODO 타입에러 수정 */}
           <Comment data={commmet} />
         </div>
       ))}
