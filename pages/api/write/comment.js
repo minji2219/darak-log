@@ -14,11 +14,17 @@ export default async function handler(req, res) {
   });
   const client = await connectDB;
   const db = client.db("blog");
-
-  await db.collection("post").updateMany(
-    { _id: new ObjectId(`${req.query.id}`) },
-    {
-      $push: { comments: { comment: req.body.comment, createdAt: createdAt } },
-    }
-  );
+  try {
+    await db.collection("post").updateMany(
+      { _id: new ObjectId(`${req.query.id}`) },
+      {
+        $push: {
+          comments: { comment: req.body.comment, createdAt: createdAt },
+        },
+      }
+    );
+    res.end();
+  } catch (e) {
+    console.log(e);
+  }
 }

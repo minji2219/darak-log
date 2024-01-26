@@ -16,16 +16,7 @@ const Post = (props: PostProps) => {
         <div>
           <div className="text-gray-400 pb-2">{props.createdAt}</div>
           <h1 className="text-3xl font-bold pb-20">{props.title}</h1>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: props.content,
-            }}
-            style={{
-              marginTop: "30px",
-              overflow: "hidden",
-              whiteSpace: "pre-wrap",
-            }}
-          />
+          <div>{props.summary}</div>
         </div>
         <IconGroup />
       </div>

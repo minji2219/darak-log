@@ -4,23 +4,27 @@ import Comment from "../comment";
 import { IoHeartOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { Post } from "@/(hi)/postlist/page";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Page() {
   const [post, setPost] = useState<Post>();
   const [commentWrite, setCommentWrite] = useState("");
   const params = useParams();
+  const router = useRouter();
 
   const postFetch = async () => {
-    await fetch(
+    const response = await fetch(
       process.env.NEXT_PUBLIC_API_KEY + "/api/read/detail/" + params?.id
-    )
-      .then((res) => res.json())
-      .then((data) => setPost(data.post));
+    );
+    const data = await response.json();
+    setPost(data.post);
   };
+
   useEffect(() => {
     postFetch();
   }, []);
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (commentWrite === "") {
@@ -42,10 +46,27 @@ export default function Page() {
     setCommentWrite("");
     postFetch();
   };
+
+  // const editPost = async () => {};
+  const deletePost = async () => {
+    const confirm = window.confirm("정말 삭제하시겠습니까?");
+    if (confirm) {
+      await fetch(
+        process.env.NEXT_PUBLIC_API_KEY +
+          "/api/delete/deletepost/?id=" +
+          params?.id,
+        {
+          method: "DELETE",
+        }
+      );
+    }
+    router.back();
+  };
+
   return (
     <div className="max-w-[950px] mx-auto">
       <div className="text-center text-white absolute top-24 left-[50%] translate-x-[-50%]">
-        <div>카테고리</div>
+        <div>{post?.category}</div>
         <h1 className="text-3xl font-bold pt-2 pb-10">{post?.title}</h1>
         <div>{post?.createdAt}</div>
       </div>
@@ -62,15 +83,18 @@ export default function Page() {
       <div className="text-gray-400 border-b-2 pb-1 flex justify-between">
         <p>댓글</p>
         <div className="flex gap-7">
-          <div>수정</div>
-          <div>삭제</div>
-          <IoHeartOutline size="25" />
+          <Link href={`/edit/${params?.id}`}>
+            <div className="text__btn">수정</div>
+          </Link>
+          <div onClick={deletePost} className="text__btn">
+            삭제
+          </div>
+          <IoHeartOutline size="25" className="text__btn" />
         </div>
       </div>
 
       {post?.comments?.map((commmet, index) => (
         <div key={index}>
-          {/* TODO 타입에러 수정 */}
           <Comment data={commmet} />
         </div>
       ))}

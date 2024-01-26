@@ -26,3 +26,11 @@ body {
 .small__home-post .title {
   @apply text-xl font-extrabold;
 }
+
+/* button setting */
+.text__btn {
+  @apply cursor-pointer;
+}
+.text__btn:hover {
+  @apply font-black;
+}
