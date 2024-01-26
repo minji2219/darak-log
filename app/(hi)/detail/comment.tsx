@@ -1,6 +1,9 @@
 import { Comment } from "../postlist/page";
 
-const Comment = ({ data }: Comment) => {
+interface CommentPorps {
+  data: Comment;
+}
+const Comment = ({ data }: CommentPorps) => {
   return (
     <div className="bg-[#F3F3F3] h-[120px] rounded-3xl my-3 px-8 py-4">
       <div className="flex items-center gap-3 mb-3">
