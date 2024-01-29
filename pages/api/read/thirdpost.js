@@ -9,5 +9,8 @@ export default async function handler(req, res) {
     .sort({ createdAt: -1 })
     .limit(3)
     .toArray();
-  return res.json({ posts: result });
+
+  let postNum = await db.collection("post").find().count();
+
+  return res.json({ posts: result, postNum: postNum });
 }

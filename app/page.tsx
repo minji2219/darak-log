@@ -5,13 +5,17 @@ import { Post } from "./(hi)/postlist/page";
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>();
+  const [postNum, setPostNum] = useState();
+
   const thirdPostFetch = async () => {
     const response = await fetch(
       process.env.NEXT_PUBLIC_API_KEY + "/api/read/thirdpost"
-    )
-      .then((res) => res.json())
-      .then((data) => setPosts(data.posts));
+    );
+    const data = await response.json();
+    setPosts(data.posts);
+    setPostNum(data.postNum);
   };
+
   useEffect(() => {
     thirdPostFetch();
   }, []);
@@ -35,7 +39,7 @@ export default function Home() {
           </div>
           <div className="flex justify-between py-3 px-5 border-b-2 border-dashed">
             <span>게시물</span>
-            <span>17</span>
+            <span>{postNum}</span>
           </div>
           <div className="flex justify-between py-3 px-5">
             <span>좋아요</span>
