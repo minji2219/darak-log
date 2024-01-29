@@ -1,36 +1,23 @@
 "use client";
 import { Post } from "@/(hi)/postlist/page";
-import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import ReactQuill, { ReactQuillProps } from "react-quill";
+import { useEffect, useMemo, useRef, useState } from "react";
+import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { storage } from "../../firebase/Firebase";
+import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 
-interface ForwardedQuillComponent extends ReactQuillProps {
-  forwardedRef: React.Ref<ReactQuill>;
-  name: string;
-}
-const QuillNoSSRWrapper = dynamic(
-  async () => {
-    const { default: QuillComponent } = await import("react-quill");
-    const Quill = ({ forwardedRef, ...props }: ForwardedQuillComponent) => (
-      <QuillComponent ref={forwardedRef} {...props} />
-    );
-    return Quill;
-  },
-  { loading: () => <div>...loading</div>, ssr: false }
-);
 interface postContent {
   postContent?: Post;
 }
 
 export default function Page({ postContent }: postContent) {
-  const quillInstance = useRef<ReactQuill>(null);
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("일상");
   const [summary, setSummary] = useState("");
 
+  const quillRef = useRef();
   const router = useRouter();
   const pathname = usePathname();
   const path = pathname?.slice(1, 5);
@@ -80,6 +67,50 @@ export default function Page({ postContent }: postContent) {
     }
     router.push("/postlist");
   };
+
+  const imageHandler = () => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+
+    input.addEventListener("change", async () => {
+      // @ts-ignore
+      const editor = quillRef.current?.getEditor();
+      const file = input.files![0];
+      const range = editor.getSelection(true);
+
+      try {
+        const storageRef = ref(storage, `image/${Date.now()}`);
+        await uploadBytes(storageRef, file).then((snapshot) => {
+          getDownloadURL(snapshot.ref).then((url) => {
+            // 이미지 URL 에디터에 삽입
+            editor.insertEmbed(range.index, "image", url);
+            // URL 삽입 후 커서를 이미지 뒷 칸으로 이동
+            editor.setSelection(range.index + 1);
+          });
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  };
+  const modules = useMemo(() => {
+    return {
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, false] }],
+          ["bold", "italic", "underline", "strike"],
+          ["blockquote"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ color: [] }, { background: [] }],
+          [{ align: [] }, "link", "image"],
+        ],
+        handlers: { image: imageHandler },
+      },
+    };
+  }, []);
+
   return (
     <form onSubmit={submit} className="mt-5 relative">
       <select
@@ -105,12 +136,13 @@ export default function Page({ postContent }: postContent) {
           {path === "edit" ? "수정" : "등록"}
         </button>
       </div>
-      <QuillNoSSRWrapper
+      <ReactQuill
         name="content"
-        forwardedRef={quillInstance}
+        // @ts-ignore
+        ref={quillRef}
         value={content}
         onChange={setContent}
-        // modules={modules}
+        modules={modules}
         theme="snow"
         placeholder="내용을 입력해주세요."
         className="h-[430px] mb-16"

@@ -21,4 +21,6 @@ export default async function handler(req, res) {
     summary: req.body.summary,
     createdAt: createdAt,
   });
+
+  res.end();
 }

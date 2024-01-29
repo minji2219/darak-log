@@ -14,7 +14,7 @@ body {
   @apply bg-slate-800/50 flex justify-between items-center w-[100%] h-[100%] rounded-[200px] p-28;
 }
 .big__home-post .title {
-  @apply text-5xl font-extrabold mb-3;
+  @apply text-5xl font-extrabold mb-3 leading-tight;
 }
 
 .small__home-post {
