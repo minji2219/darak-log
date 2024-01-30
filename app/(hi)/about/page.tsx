@@ -1,5 +1,3 @@
-import Image from "next/image";
-import subtract from "../../../public/subtract.png";
 import { GoPerson } from "react-icons/go";
 import { IoHeartOutline } from "react-icons/io5";
 

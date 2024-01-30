@@ -8,7 +8,11 @@ export interface Comment {
   createdAt: string;
   comment: string;
 }
-export interface Post extends PostProps {
+export interface Post {
+  title: string;
+  createdAt: string;
+  content: string;
+  summary: string;
   comments?: Comment[];
   _id: string;
 }
@@ -32,20 +36,31 @@ export default function Page() {
         <h1 className="text-3xl font-bold pt-2 pb-10">카테고리</h1>
         <div>게시물 {posts?.length}개</div>
       </div>
+
       {posts &&
-        posts?.map((post) => (
-          <div key={post._id}>
-            <Link href={`/detail/${post._id}`}>
-              <Post
-                title={post.title}
-                content={post.content}
-                createdAt={post.createdAt}
-                category={post.category}
-                summary={post.summary}
-              />
-            </Link>
-          </div>
-        ))}
+        posts?.map((post) => {
+          let imgStart = post.content.indexOf("src");
+          let img;
+          if (imgStart > -1) {
+            let imgEnd = post.content.indexOf(">", imgStart);
+            img = post.content.slice(imgStart + 5, imgEnd - 1);
+          }
+
+          return (
+            <div key={post._id}>
+              <Link href={`/detail/${post._id}`}>
+                <Post
+                  title={post.title}
+                  img={img}
+                  // content={post.content}
+                  createdAt={post.createdAt}
+                  // category={post.category}
+                  summary={post.summary}
+                />
+              </Link>
+            </div>
+          );
+        })}
     </div>
   );
 }
