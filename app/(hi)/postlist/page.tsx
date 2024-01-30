@@ -13,6 +13,7 @@ export interface Post {
   createdAt: string;
   content: string;
   summary: string;
+  category: string;
   comments?: Comment[];
   _id: string;
 }
@@ -41,6 +42,7 @@ export default function Page() {
         posts?.map((post) => {
           let imgStart = post.content.indexOf("src");
           let img;
+
           if (imgStart > -1) {
             let imgEnd = post.content.indexOf(">", imgStart);
             img = post.content.slice(imgStart + 5, imgEnd - 1);
@@ -52,10 +54,11 @@ export default function Page() {
                 <Post
                   title={post.title}
                   img={img}
-                  // content={post.content}
                   createdAt={post.createdAt}
-                  // category={post.category}
                   summary={post.summary}
+                  commentNum={post.comments ? post.comments.length : 0}
+                  // category={post.category}
+                  // content={post.content}
                 />
               </Link>
             </div>

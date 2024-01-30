@@ -28,7 +28,13 @@ const HomePost = (props: HomePostProps) => {
             <div className="text-white">
               <div className="title">{props.post.title}</div>
               <div className="text-lg">{props.post.createdAt}</div>
-              {size === "big" && <IconGroup />}
+              {size === "big" && (
+                <IconGroup
+                  commentNum={
+                    props.post.comments ? props.post.comments.length : 0
+                  }
+                />
+              )}
             </div>
             <Image src="/vector.png" alt="화살표" width={100} height={100} />
           </div>

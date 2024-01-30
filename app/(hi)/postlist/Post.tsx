@@ -7,6 +7,7 @@ export interface PostProps {
   createdAt: string;
   summary: string;
   img?: string;
+  commentNum: number;
 }
 const Post = (props: PostProps) => {
   return (
@@ -31,7 +32,7 @@ const Post = (props: PostProps) => {
           <h1 className="text-3xl font-bold pb-20">{props.title}</h1>
           <div>{props.summary}</div>
         </div>
-        <IconGroup />
+        <IconGroup commentNum={props.commentNum} />
       </div>
     </div>
   );

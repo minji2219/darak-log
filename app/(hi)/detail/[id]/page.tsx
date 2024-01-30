@@ -71,7 +71,7 @@ export default function Page() {
         <div>{post?.createdAt}</div>
       </div>
       <div className="flex justify-center mb-24">
-        <IconGroup />
+        <IconGroup commentNum={post?.comments ? post?.comments.length : 0} />
       </div>
       <div className="min-h-[350px]">
         <div
