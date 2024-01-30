@@ -2,14 +2,30 @@
 import { Post } from "@/(hi)/postlist/page";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import ReactQuill from "react-quill";
+import ReactQuill, { ReactQuillProps } from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { storage } from "../../firebase/Firebase";
+import { storage } from "../../firebase/firebase";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
+import dynamic from "next/dynamic";
 
+interface ForwardedQuillComponent extends ReactQuillProps {
+  forwardedRef: React.Ref<ReactQuill>;
+  name: string;
+}
 interface postContent {
   postContent?: Post;
 }
+
+const QuillNoSSRWrapper = dynamic(
+  async () => {
+    const { default: QuillComponent } = await import("react-quill");
+    const Quill = ({ forwardedRef, ...props }: ForwardedQuillComponent) => (
+      <QuillComponent ref={forwardedRef} {...props} />
+    );
+    return Quill;
+  },
+  { loading: () => <div>...loading</div>, ssr: false }
+);
 
 export default function Page({ postContent }: postContent) {
   const [content, setContent] = useState("");
@@ -17,7 +33,7 @@ export default function Page({ postContent }: postContent) {
   const [category, setCategory] = useState("일상");
   const [summary, setSummary] = useState("");
 
-  const quillRef = useRef();
+  const quillRef = useRef<ReactQuill>(null);
   const router = useRouter();
   const pathname = usePathname();
   const path = pathname?.slice(1, 5);
@@ -75,19 +91,18 @@ export default function Page({ postContent }: postContent) {
     input.click();
 
     input.addEventListener("change", async () => {
-      // @ts-ignore
       const editor = quillRef.current?.getEditor();
       const file = input.files![0];
-      const range = editor.getSelection(true);
+      const range = editor?.getSelection(true)!;
 
       try {
         const storageRef = ref(storage, `image/${Date.now()}`);
         await uploadBytes(storageRef, file).then((snapshot) => {
           getDownloadURL(snapshot.ref).then((url) => {
             // 이미지 URL 에디터에 삽입
-            editor.insertEmbed(range.index, "image", url);
+            editor?.insertEmbed(range.index, "image", url);
             // URL 삽입 후 커서를 이미지 뒷 칸으로 이동
-            editor.setSelection(range.index + 1);
+            // editor?.setSelection(range.index + 1);
           });
         });
       } catch (error) {
@@ -136,10 +151,9 @@ export default function Page({ postContent }: postContent) {
           {path === "edit" ? "수정" : "등록"}
         </button>
       </div>
-      <ReactQuill
+      <QuillNoSSRWrapper
+        forwardedRef={quillRef}
         name="content"
-        // @ts-ignore
-        ref={quillRef}
         value={content}
         onChange={setContent}
         modules={modules}
