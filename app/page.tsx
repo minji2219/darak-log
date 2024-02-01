@@ -4,16 +4,18 @@ import HomePost from "./components/HomePost";
 import { Post } from "./(hi)/postlist/page";
 
 export default function Home() {
-  const [posts, setPosts] = useState<Post[]>();
+  const [threePosts, setThreePosts] = useState<Post[]>();
   const [postNum, setPostNum] = useState();
+  const [likedNum, setLikedNum] = useState();
 
   const thirdPostFetch = async () => {
     const response = await fetch(
       process.env.NEXT_PUBLIC_API_KEY + "/api/read/thirdpost"
     );
     const data = await response.json();
-    setPosts(data.posts);
+    setThreePosts(data.posts);
     setPostNum(data.postNum);
+    setLikedNum(data.likedNum);
   };
 
   useEffect(() => {
@@ -26,9 +28,9 @@ export default function Home() {
         다락로그
       </div>
 
-      <HomePost post={(posts && posts[0]) || undefined} />
-      <HomePost post={(posts && posts[1]) || undefined} small />
-      <HomePost post={(posts && posts[2]) || undefined} small />
+      <HomePost post={(threePosts && threePosts[0]) || undefined} />
+      <HomePost post={(threePosts && threePosts[1]) || undefined} small />
+      <HomePost post={(threePosts && threePosts[2]) || undefined} small />
 
       <div className="flex justify-between">
         <div className="bg-white h-[300px] w-[550px] rounded-[200px] my-5 py-14 px-20">

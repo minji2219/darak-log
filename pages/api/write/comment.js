@@ -19,7 +19,11 @@ export default async function handler(req, res) {
       { _id: new ObjectId(`${req.query.id}`) },
       {
         $push: {
-          comments: { comment: req.body.comment, createdAt: createdAt },
+          comments: {
+            nickname: req.body.nickname ? req.body.nickname : "익명",
+            comment: req.body.comment,
+            createdAt: createdAt,
+          },
         },
       }
     );

@@ -1,7 +1,7 @@
 "use client";
 import IconGroup from "@/components/IconGroup";
 import Comment from "../comment";
-import { IoHeartOutline } from "react-icons/io5";
+import { IoHeart, IoHeartOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { Post } from "@/(hi)/postlist/page";
 import { useParams, useRouter } from "next/navigation";
@@ -42,14 +42,15 @@ export default function Page() {
         },
         body: JSON.stringify({
           comment: commentWrite,
+          nickname: nickname,
         }),
       }
     );
     setCommentWrite("");
+    setNickname("");
     postFetch();
   };
 
-  // const editPost = async () => {};
   const deletePost = async () => {
     const confirm = window.confirm("정말 삭제하시겠습니까?");
     if (confirm) {
@@ -123,12 +124,18 @@ export default function Page() {
         </div>
       ))}
 
-      <div className="border-t-2 mt-20 pt-5 pb-16">
+      <form onSubmit={onSubmit} className="border-t-2 mt-20 pt-5 pb-16">
         <div className="flex gap-3 items-center px-5 pb-3">
           <div className="w-[40px] h-[40px] rounded-[50%] bg-[#D9D9D9]"></div>
-          <div className="font-bold">닉네임</div>
+          <input
+            name="nickname"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            className="font-bold border-2 rounded-md p-1 w-40"
+            placeholder="닉네임"
+          />
         </div>
-        <form onSubmit={onSubmit} className="flex gap-2 grow">
+        <div className="flex gap-2 grow">
           <textarea
             placeholder="내용"
             className="p-3 border-2 border-black rounded-3xl grow"
@@ -136,8 +143,8 @@ export default function Page() {
             onChange={(e) => setCommentWrite(e.target.value)}
           />
           <button className="p-10 bg-black text-white rounded-3xl">등록</button>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 }

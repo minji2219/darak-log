@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 export interface Comment {
   createdAt: string;
   comment: string;
+  nickname: string;
 }
 export interface Post {
   title: string;
