@@ -1,7 +1,26 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { GoPerson } from "react-icons/go";
 import { IoHeartOutline } from "react-icons/io5";
 
 export default function Page() {
+  const [postNum, setPostNum] = useState(0);
+  const [likedNum, setLikedNum] = useState(0);
+
+  const aboutFetch = async () => {
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_API_KEY + "/api/read/about"
+    );
+    const data = await response.json();
+    setPostNum(data.postNum);
+    setLikedNum(data.likedNum);
+  };
+
+  useEffect(() => {
+    aboutFetch();
+  }, []);
+
   return (
     <div>
       <div className="text-center text-white absolute top-24 left-[50%] translate-x-[-50%]">
@@ -17,12 +36,12 @@ export default function Page() {
         </div>
         <div className="flex flex-col items-center">
           <span className="text-2xl">게시물</span>
-          <span className="text-6xl font-bold">17</span>
+          <span className="text-6xl font-bold">{postNum}</span>
         </div>
         <div className="flex flex-col items-center">
           <IoHeartOutline size={100} className="mb-7" />
           <span className="text-2xl">좋아요</span>
-          <span className="text-6xl font-bold">50</span>
+          <span className="text-6xl font-bold">{likedNum}</span>
         </div>
       </div>
     </div>

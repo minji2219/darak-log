@@ -8,6 +8,7 @@ export interface PostProps {
   summary: string;
   img?: string;
   commentNum: number;
+  likedNum: number;
 }
 const Post = (props: PostProps) => {
   return (
@@ -32,7 +33,7 @@ const Post = (props: PostProps) => {
           <h1 className="text-3xl font-bold pb-20">{props.title}</h1>
           <div>{props.summary}</div>
         </div>
-        <IconGroup commentNum={props.commentNum} />
+        <IconGroup commentNum={props.commentNum} likedNum={props.likedNum} />
       </div>
     </div>
   );

@@ -10,6 +10,8 @@ import Link from "next/link";
 export default function Page() {
   const [post, setPost] = useState<Post>();
   const [commentWrite, setCommentWrite] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [heartSort, setHeartSort] = useState("outline");
   const params = useParams();
   const router = useRouter();
 
@@ -63,6 +65,17 @@ export default function Page() {
     router.back();
   };
 
+  const likedHandle = async () => {
+    await fetch(
+      process.env.NEXT_PUBLIC_API_KEY + "/api/write/liked/?id=" + params?.id
+    );
+    postFetch();
+    setHeartSort("fill");
+    setTimeout(() => {
+      setHeartSort("outline");
+    }, 2000);
+  };
+
   return (
     <div className="max-w-[950px] mx-auto">
       <div className="text-center text-white absolute top-24 left-[50%] translate-x-[-50%]">
@@ -71,7 +84,10 @@ export default function Page() {
         <div>{post?.createdAt}</div>
       </div>
       <div className="flex justify-center mb-24">
-        <IconGroup commentNum={post?.comments ? post?.comments.length : 0} />
+        <IconGroup
+          commentNum={post?.comments ? post?.comments.length : 0}
+          likedNum={post?.like ? post?.like : 0}
+        />
       </div>
       <div className="min-h-[350px]">
         <div
@@ -89,7 +105,15 @@ export default function Page() {
           <div onClick={deletePost} className="text__btn">
             삭제
           </div>
-          <IoHeartOutline size="25" className="text__btn" />
+          {heartSort === "outline" ? (
+            <IoHeartOutline
+              size="25"
+              className="text__btn text-red-400 "
+              onClick={likedHandle}
+            />
+          ) : (
+            <IoHeart size="25" className="text__btn text-red-400 " />
+          )}
         </div>
       </div>
 

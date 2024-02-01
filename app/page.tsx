@@ -43,7 +43,7 @@ export default function Home() {
           </div>
           <div className="flex justify-between py-3 px-5">
             <span>좋아요</span>
-            <span>50</span>
+            <span>{likedNum}</span>
           </div>
         </div>
         <div className="bg-[url('/profile.jpg')] bg-no-repeat bg-cover h-[300px] w-[300px] rounded-[50%] my-5"></div>

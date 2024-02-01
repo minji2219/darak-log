@@ -4,7 +4,7 @@ import { FaRegEye } from "react-icons/fa6";
 
 interface IconGroupProps {
   commentNum: number;
-  // likedNum: number;
+  likedNum: number;
   // observerNum: number;
 }
 const IconGroup = (props: IconGroupProps) => {
@@ -16,7 +16,7 @@ const IconGroup = (props: IconGroupProps) => {
       </div>
       <div className="flex gap-2 items-center">
         <IoHeartOutline size="20" />
-        <span>5</span>
+        <span>{props.likedNum}</span>
       </div>
       <div className="flex gap-2 items-center">
         <FaRegEye size="15" />

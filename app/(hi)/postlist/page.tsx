@@ -14,6 +14,7 @@ export interface Post {
   content: string;
   summary: string;
   category: string;
+  like?: number;
   comments?: Comment[];
   _id: string;
 }
@@ -22,9 +23,9 @@ export default function Page() {
   const postlistFetch = async () => {
     const response = await fetch(
       process.env.NEXT_PUBLIC_API_KEY + "/api/read/postlist"
-    )
-      .then((res) => res.json())
-      .then((data) => setPosts(data.posts));
+    );
+    const data = await response.json();
+    setPosts(data.posts);
   };
   useEffect(() => {
     postlistFetch();
@@ -57,6 +58,7 @@ export default function Page() {
                   createdAt={post.createdAt}
                   summary={post.summary}
                   commentNum={post.comments ? post.comments.length : 0}
+                  likedNum={post?.like ? post?.like : 0}
                   // category={post.category}
                   // content={post.content}
                 />

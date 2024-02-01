@@ -33,6 +33,7 @@ const HomePost = (props: HomePostProps) => {
                   commentNum={
                     props.post.comments ? props.post.comments.length : 0
                   }
+                  likedNum={props.post?.like ? props.post?.like : 0}
                 />
               )}
             </div>
