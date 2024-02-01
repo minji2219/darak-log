@@ -5,8 +5,8 @@ import { Post } from "./(hi)/postlist/page";
 
 export default function Home() {
   const [threePosts, setThreePosts] = useState<Post[]>();
-  const [postNum, setPostNum] = useState();
-  const [likedNum, setLikedNum] = useState();
+  const [postNum, setPostNum] = useState(0);
+  const [likedNum, setLikedNum] = useState(0);
 
   const thirdPostFetch = async () => {
     const response = await fetch(

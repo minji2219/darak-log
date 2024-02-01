@@ -21,22 +21,46 @@ export interface Post {
 }
 export default function Page() {
   const [posts, setPosts] = useState<Post[]>();
+  const [category, setCategory] = useState("전체");
+
   const postlistFetch = async () => {
     const response = await fetch(
-      process.env.NEXT_PUBLIC_API_KEY + "/api/read/postlist"
+      process.env.NEXT_PUBLIC_API_KEY +
+        "/api/read/postlist/?category=" +
+        category
     );
     const data = await response.json();
     setPosts(data.posts);
   };
   useEffect(() => {
     postlistFetch();
-  }, []);
+  }, [category]);
 
   return (
     <div className="pt-10">
       <div className="text-center text-white absolute top-24 left-[50%] translate-x-[-50%]">
         <div>다락로그</div>
-        <h1 className="text-3xl font-bold pt-2 pb-10">카테고리</h1>
+        <select
+          name="category"
+          className="text-3xl bg-transparent text-center ml-4 my-3 focus:outline-none"
+          onChange={(e) => {
+            setCategory(e.target.value);
+          }}
+          value={category}
+        >
+          <option className="text-gray-500" value="전체">
+            카테고리
+          </option>
+          <option className="text-gray-500" value="일상">
+            일상
+          </option>
+          <option className="text-gray-500" value="여행">
+            여행
+          </option>
+          <option className="text-gray-500" value="공부">
+            공부
+          </option>
+        </select>
         <div>게시물 {posts?.length}개</div>
       </div>
 

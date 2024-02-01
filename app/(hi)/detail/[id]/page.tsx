@@ -25,7 +25,7 @@ export default function Page() {
 
   useEffect(() => {
     postFetch();
-  }, []);
+  }, [heartSort]);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -70,7 +70,6 @@ export default function Page() {
     await fetch(
       process.env.NEXT_PUBLIC_API_KEY + "/api/write/liked/?id=" + params?.id
     );
-    postFetch();
     setHeartSort("fill");
     setTimeout(() => {
       setHeartSort("outline");

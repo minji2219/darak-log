@@ -12,7 +12,7 @@ export interface PostProps {
 }
 const Post = (props: PostProps) => {
   return (
-    <div className="flex gap-5 border-b py-6">
+    <div className="flex gap-8 border-b py-6">
       {props.img ? (
         <Image
           src={props.img}
@@ -22,12 +22,12 @@ const Post = (props: PostProps) => {
           className="h-[250px] rounded-3xl"
         />
       ) : (
-        <div className="w-[250px] h-[250px] bg-slate-300 rounded-3xl">
+        <div className="min-w-[250px] h-[250px] bg-slate-300 rounded-3xl">
           기본 그림
         </div>
       )}
 
-      <div className="p-5">
+      <div className="py-5">
         <div>
           <div className="text-gray-400 pb-2">{props.createdAt}</div>
           <h1 className="text-3xl font-bold pb-20">{props.title}</h1>
