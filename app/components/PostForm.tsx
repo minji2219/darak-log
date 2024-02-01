@@ -7,6 +7,7 @@ import "react-quill/dist/quill.snow.css";
 import { storage } from "../../firebase/firebase";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 import dynamic from "next/dynamic";
+import { toast } from "react-toastify";
 
 interface ForwardedQuillComponent extends ReactQuillProps {
   forwardedRef: React.Ref<ReactQuill>;
@@ -51,37 +52,54 @@ export default function Page({ postContent }: postContent) {
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (path === "edit") {
-      await fetch(
-        process.env.NEXT_PUBLIC_API_KEY + "/api/edit/editpost/?id=" + postId,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json; charset=utf-8",
-          },
-          body: JSON.stringify({
-            title: title,
-            content: content,
-            category: category,
-            summary: summary,
-          }),
-        }
-      );
+      try {
+        await fetch(
+          process.env.NEXT_PUBLIC_API_KEY + "/api/edit/editpost/?id=" + postId,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json; charset=utf-8",
+            },
+            body: JSON.stringify({
+              title: title,
+              content: content,
+              category: category,
+              summary: summary,
+            }),
+          }
+        );
+        toast.success("수정이 완료되었습니다.");
+      } catch (e) {
+        toast.error("수정을 실패하셨습니다.");
+      }
     } else {
-      await fetch(process.env.NEXT_PUBLIC_API_KEY + "/api/write/post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-        },
-        body: JSON.stringify({
-          //TODO, 셋중 하나라도 빠지면 toast로 빈칸 입력 err 뜨게하기
-          title: title,
-          content: content,
-          category: category,
-          summary: summary,
-        }),
-      });
+      if (title === "") {
+        toast.error("제목을 입력해주세요.");
+      } else if (content === "") {
+        toast.error("내용을 입력해주세요.");
+      } else if (summary === "") {
+        toast.error("요약을 입력해주세요.");
+      } else {
+        try {
+          await fetch(process.env.NEXT_PUBLIC_API_KEY + "/api/write/post", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json; charset=utf-8",
+            },
+            body: JSON.stringify({
+              title: title,
+              content: content,
+              category: category,
+              summary: summary,
+            }),
+          });
+          toast.success("글작성이 완료되었습니다");
+          router.push("/postlist");
+        } catch (e) {
+          toast.error("글작성에 실패하셨습니다.");
+        }
+      }
     }
-    router.push("/postlist");
   };
 
   const imageHandler = () => {

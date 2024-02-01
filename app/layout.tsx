@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, IBM_Plex_Sans_KR } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
+      <ToastContainer />
       <body className={`${IBM.className} bg-black`}>
         <NavBar />
         {children}
