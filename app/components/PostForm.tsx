@@ -51,6 +51,18 @@ export default function Page({ postContent }: postContent) {
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (title === "") {
+      toast.error("제목을 입력해주세요.");
+      return;
+    } else if (content === "") {
+      toast.error("내용을 입력해주세요.");
+      return;
+    } else if (summary === "") {
+      toast.error("요약을 입력해주세요.");
+      return;
+    }
+
     if (path === "edit") {
       try {
         await fetch(
@@ -69,35 +81,28 @@ export default function Page({ postContent }: postContent) {
           }
         );
         toast.success("수정이 완료되었습니다.");
+        router.push("/postlist");
       } catch (e) {
         toast.error("수정을 실패하셨습니다.");
       }
     } else {
-      if (title === "") {
-        toast.error("제목을 입력해주세요.");
-      } else if (content === "") {
-        toast.error("내용을 입력해주세요.");
-      } else if (summary === "") {
-        toast.error("요약을 입력해주세요.");
-      } else {
-        try {
-          await fetch(process.env.NEXT_PUBLIC_API_KEY + "/api/write/post", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json; charset=utf-8",
-            },
-            body: JSON.stringify({
-              title: title,
-              content: content,
-              category: category,
-              summary: summary,
-            }),
-          });
-          toast.success("글작성이 완료되었습니다");
-          router.push("/postlist");
-        } catch (e) {
-          toast.error("글작성에 실패하셨습니다.");
-        }
+      try {
+        await fetch(process.env.NEXT_PUBLIC_API_KEY + "/api/write/post", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: JSON.stringify({
+            title: title,
+            content: content,
+            category: category,
+            summary: summary,
+          }),
+        });
+        toast.success("글작성이 완료되었습니다");
+        router.push("/postlist");
+      } catch (e) {
+        toast.error("글작성에 실패하셨습니다.");
       }
     }
   };

@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "server": "nodemon server/server.js"
+    "lint": "next lint"
   },
   "dependencies": {
     "@looop/quill-image-resize-module-react": "^3.1.5",

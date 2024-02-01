@@ -24,8 +24,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <ToastContainer />
       <body className={`${IBM.className} bg-black`}>
+        <ToastContainer />
         <NavBar />
         {children}
       </body>
