@@ -2,11 +2,18 @@
 import { useEffect, useState } from "react";
 import HomePost from "./components/HomePost";
 import { Post } from "./(hi)/postlist/page";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { app } from "../firebase/firebase";
 
 export default function Home() {
   const [threePosts, setThreePosts] = useState<Post[]>();
   const [postNum, setPostNum] = useState(0);
   const [likedNum, setLikedNum] = useState(0);
+  const auth = getAuth(app);
+  const [init, setInit] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+    !!auth?.currentUser
+  );
 
   const thirdPostFetch = async () => {
     const response = await fetch(
@@ -22,6 +29,17 @@ export default function Home() {
     thirdPostFetch();
   }, []);
 
+  //auth에 obserber를 넣어서 계정이 변동이 되었는지 새로고침 안해도 확인 가능하게 하는 것
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+      setInit(true);
+    });
+  }, [auth]);
   return (
     <div className="max-w-[900px] mx-auto">
       <div className="text-white text-4xl font-extrabold text-center mb-24">

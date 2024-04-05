@@ -1,13 +1,14 @@
 "use client";
 import { Post } from "@/(hi)/postlist/page";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import ReactQuill, { ReactQuillProps } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { storage } from "../../firebase/firebase";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 import dynamic from "next/dynamic";
 import { toast } from "react-toastify";
+import AuthContext from "@/context/AuthContext";
 
 interface ForwardedQuillComponent extends ReactQuillProps {
   forwardedRef: React.Ref<ReactQuill>;
@@ -33,7 +34,7 @@ export default function Page({ postContent }: postContent) {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("일상");
   const [summary, setSummary] = useState("");
-
+  const { user } = useContext(AuthContext);
   const quillRef = useRef<ReactQuill>(null);
   const router = useRouter();
   const pathname = usePathname();
@@ -97,6 +98,7 @@ export default function Page({ postContent }: postContent) {
             content: content,
             category: category,
             summary: summary,
+            user: user?.email,
           }),
         });
         toast.success("글작성이 완료되었습니다");

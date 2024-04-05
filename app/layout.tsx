@@ -4,6 +4,7 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AuthContext, { AuthContextProvider } from "./context/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,9 +26,11 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${IBM.className} bg-black`}>
-        <ToastContainer />
-        <NavBar />
-        {children}
+        <AuthContextProvider>
+          <ToastContainer />
+          <NavBar />
+          {children}
+        </AuthContextProvider>
       </body>
     </html>
   );

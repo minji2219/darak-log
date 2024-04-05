@@ -15,6 +15,7 @@ export interface Post {
   content: string;
   summary: string;
   category: string;
+  user: string;
   like?: number;
   comments?: Comment[];
   _id: string;
@@ -76,7 +77,13 @@ export default function Page() {
 
           return (
             <div key={post._id}>
-              <Link href={`/detail/${post._id}`}>
+              <Link
+                href={{
+                  pathname: `/detail/${post._id}`,
+                  query: { user: post?.user },
+                }}
+                as={`/detail/${post._id}`}
+              >
                 <Post
                   title={post.title}
                   img={img}
@@ -84,6 +91,7 @@ export default function Page() {
                   summary={post.summary}
                   commentNum={post.comments ? post.comments.length : 0}
                   likedNum={post?.like ? post?.like : 0}
+                  user={post?.user || "익명"}
                   // category={post.category}
                   // content={post.content}
                 />

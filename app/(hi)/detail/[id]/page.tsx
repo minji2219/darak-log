@@ -2,10 +2,11 @@
 import IconGroup from "@/components/IconGroup";
 import Comment from "../comment";
 import { IoHeart, IoHeartOutline } from "react-icons/io5";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Post } from "@/(hi)/postlist/page";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import AuthContext from "@/context/AuthContext";
 
 export default function Page() {
   const [post, setPost] = useState<Post>();
@@ -14,6 +15,7 @@ export default function Page() {
   const [heartSort, setHeartSort] = useState("outline");
   const params = useParams();
   const router = useRouter();
+  const { user } = useContext(AuthContext);
 
   const postFetch = async () => {
     const response = await fetch(
@@ -89,7 +91,7 @@ export default function Page() {
           likedNum={post?.like ? post?.like : 0}
         />
       </div>
-      <div className="min-h-[350px]">
+      <div className="min-h-[350px] mb-10">
         <div
           dangerouslySetInnerHTML={{
             __html: post?.content as string,
@@ -99,12 +101,17 @@ export default function Page() {
       <div className="text-gray-400 border-b-2 pb-1 flex justify-between">
         <p>댓글</p>
         <div className="flex gap-7">
-          <Link href={`/edit/${params?.id}`}>
-            <div className="text__btn">수정</div>
-          </Link>
-          <div onClick={deletePost} className="text__btn">
-            삭제
-          </div>
+          {post?.user === user?.email && (
+            <>
+              <Link href={`/edit/${params?.id}`}>
+                <div className="text__btn">수정</div>
+              </Link>
+              <div onClick={deletePost} className="text__btn">
+                삭제
+              </div>
+            </>
+          )}
+
           {heartSort === "outline" ? (
             <IoHeartOutline
               size="25"

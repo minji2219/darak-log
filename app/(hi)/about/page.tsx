@@ -1,10 +1,14 @@
 "use client";
 
+import { getAuth, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { GoPerson } from "react-icons/go";
 import { IoHeartOutline } from "react-icons/io5";
+import { app } from "../../../firebase/firebase";
+import { toast } from "react-toastify";
+import withAuth from "../../../pages/api/route";
 
-export default function Page() {
+function Page() {
   const [postNum, setPostNum] = useState(0);
   const [likedNum, setLikedNum] = useState(0);
 
@@ -20,7 +24,15 @@ export default function Page() {
   useEffect(() => {
     aboutFetch();
   }, []);
-
+  const onClick = async () => {
+    try {
+      const auth = getAuth(app);
+      await signOut(auth);
+      toast.success("로그아웃이 완료 되었습니다.");
+    } catch (e: any) {
+      toast.error(e?.code);
+    }
+  };
   return (
     <div>
       <div className="text-center text-white absolute top-24 left-[50%] translate-x-[-50%]">
@@ -44,6 +56,13 @@ export default function Page() {
           <span className="text-6xl font-bold">{likedNum}</span>
         </div>
       </div>
+      <button
+        className="w-80 p-3 rounded-md bg-[#60a5fa] text-white mt-5 mx-auto block"
+        onClick={onClick}
+      >
+        Logout
+      </button>
     </div>
   );
 }
+export default withAuth(Page);

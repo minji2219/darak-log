@@ -1,5 +1,7 @@
+"use client";
 import PostForm from "@/components/PostForm";
-export default function Page() {
+import withAuth from "../../../pages/api/route";
+function Page() {
   return (
     <>
       <div className="text-center text-white absolute top-24 left-[50%] translate-x-[-50%]">
@@ -10,3 +12,4 @@ export default function Page() {
     </>
   );
 }
+export default withAuth(Page);

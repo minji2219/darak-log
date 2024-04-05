@@ -34,3 +34,11 @@ body {
 .text__btn:hover {
   @apply font-black;
 }
+
+/* input setting */
+.form__block {
+  @apply flex flex-col gap-3;
+}
+.form__block input {
+  @apply border border-gray-500 w-80 p-3 rounded-md;
+}

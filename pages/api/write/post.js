@@ -19,6 +19,7 @@ export default async function handler(req, res) {
     content: req.body.content,
     category: req.body.category,
     summary: req.body.summary,
+    user: req.body.user,
     createdAt: createdAt,
   });
 
