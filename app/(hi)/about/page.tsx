@@ -1,20 +1,24 @@
 "use client";
 
 import { getAuth, signOut } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GoPerson } from "react-icons/go";
 import { IoHeartOutline } from "react-icons/io5";
 import { app } from "../../../firebase/firebase";
 import { toast } from "react-toastify";
 import withAuth from "../../../pages/api/route";
+import AuthContext from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 function Page() {
   const [postNum, setPostNum] = useState(0);
   const [likedNum, setLikedNum] = useState(0);
+  const { user } = useContext(AuthContext);
+  const router = useRouter();
 
   const aboutFetch = async () => {
     const response = await fetch(
-      process.env.NEXT_PUBLIC_API_KEY + "/api/read/about"
+      process.env.NEXT_PUBLIC_API_KEY + "/api/read/about/?user=" + user?.email
     );
     const data = await response.json();
     setPostNum(data.postNum);
@@ -29,6 +33,7 @@ function Page() {
       const auth = getAuth(app);
       await signOut(auth);
       toast.success("로그아웃이 완료 되었습니다.");
+      router.push("/");
     } catch (e: any) {
       toast.error(e?.code);
     }
@@ -48,12 +53,12 @@ function Page() {
         </div>
         <div className="flex flex-col items-center">
           <span className="text-2xl">게시물</span>
-          <span className="text-6xl font-bold">{postNum}</span>
+          <span className="text-6xl font-bold">{postNum || 0}</span>
         </div>
         <div className="flex flex-col items-center">
           <IoHeartOutline size={100} className="mb-7" />
           <span className="text-2xl">좋아요</span>
-          <span className="text-6xl font-bold">{likedNum}</span>
+          <span className="text-6xl font-bold">{likedNum || 0}</span>
         </div>
       </div>
       <button
@@ -65,4 +70,4 @@ function Page() {
     </div>
   );
 }
-export default withAuth(Page);
+export default Page;

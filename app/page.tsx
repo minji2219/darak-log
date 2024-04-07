@@ -1,9 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import HomePost from "./components/HomePost";
 import { Post } from "./(hi)/postlist/page";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "../firebase/firebase";
+import AuthContext from "./context/AuthContext";
 
 export default function Home() {
   const [threePosts, setThreePosts] = useState<Post[]>();
@@ -14,7 +15,6 @@ export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     !!auth?.currentUser
   );
-
   const thirdPostFetch = async () => {
     const response = await fetch(
       process.env.NEXT_PUBLIC_API_KEY + "/api/read/thirdpost"

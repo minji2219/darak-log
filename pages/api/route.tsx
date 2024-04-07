@@ -11,7 +11,7 @@ const withAuth = (Component: NextPage | React.FC) => {
 
     useEffect(() => {
       if (!user) {
-        // Login 컴포넌트를 출력하거나
+        // 컴포넌트를 출력하거나
         // 이미 로그인 화면이 구현된 페이지를 사용하고 싶다면 useRouter()를 통해 라우팅
         alert("해당 페이지는 로그인 후 접근 가능합니다.");
         router.push("/login");

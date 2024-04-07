@@ -1,17 +1,16 @@
 "use client";
 import IconGroup from "@/components/IconGroup";
-import Comment from "../comment";
 import { IoHeart, IoHeartOutline } from "react-icons/io5";
 import { useContext, useEffect, useState } from "react";
 import { Post } from "@/(hi)/postlist/page";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthContext from "@/context/AuthContext";
+import CommentComponent from "../comment";
 
 export default function Page() {
   const [post, setPost] = useState<Post>();
   const [commentWrite, setCommentWrite] = useState("");
-  const [nickname, setNickname] = useState("");
   const [heartSort, setHeartSort] = useState("outline");
   const params = useParams();
   const router = useRouter();
@@ -31,6 +30,10 @@ export default function Page() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user) {
+      alert("로그인 후 댓글 작성이 가능합니다.");
+      return;
+    }
     if (commentWrite === "") {
       alert("댓글을 입력하세요.");
       return;
@@ -44,12 +47,11 @@ export default function Page() {
         },
         body: JSON.stringify({
           comment: commentWrite,
-          nickname: nickname,
+          nickname: user.email,
         }),
       }
     );
     setCommentWrite("");
-    setNickname("");
     postFetch();
   };
 
@@ -126,21 +128,11 @@ export default function Page() {
 
       {post?.comments?.map((commmet, index) => (
         <div key={index}>
-          <Comment data={commmet} />
+          <CommentComponent data={commmet} />
         </div>
       ))}
 
-      <form onSubmit={onSubmit} className="border-t-2 mt-20 pt-5 pb-16">
-        <div className="flex gap-3 items-center px-5 pb-3">
-          <div className="w-[40px] h-[40px] rounded-[50%] bg-[#D9D9D9]"></div>
-          <input
-            name="nickname"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            className="font-bold border-2 rounded-md p-1 w-40"
-            placeholder="닉네임"
-          />
-        </div>
+      <form onSubmit={onSubmit} className="border-t-2 mt-20 pt-10 pb-16">
         <div className="flex gap-2 grow">
           <textarea
             placeholder="내용"
