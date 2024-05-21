@@ -4,11 +4,9 @@
 ![image](https://github.com/minji2219/darak-log/assets/119796600/cd9de240-30f4-4b16-b745-0c2ca634bb18)
 ---
 ### 주요 특징
-개발기간: 2024.01(한달)  
+**개발기간:** 2024.01(한달)  
 개인프로젝트로 진행  
-배포사이트: https://darak-log.vercel.app/
-
-
+**배포사이트:** https://darak-log.vercel.app/
 
 ### 주요기능
 1. 글 작성, 수정 삭제,
